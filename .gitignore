@@ -1,5 +1,7 @@
-node_modules/
-build/
-content/
-theme/
-static/
+/node_modules/
+/build/
+/content/
+/theme/
+/static/
+/report\.*\.json
+.DS_Store

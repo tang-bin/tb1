@@ -6,6 +6,10 @@ class APIRouter extends Router {
         super();
         this.type = "api";
         this.router.get("/", (req, res) => res.send("api root"));
+        this.router.get("/*", (req, res) => {
+            const n: string = req.path;
+            res.send("api " + n);
+        });
     }
 }
 

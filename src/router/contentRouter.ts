@@ -1,21 +1,22 @@
 import { Router } from './Router';
-import { Path } from '../util/Path';
+import { ContentFile } from '../content/ContentFile';
+import { routerUtil } from '../util/routerUtil';
 
 class ContentRouter extends Router {
 
-    static EXCLUDE_PATH: Array<string> = ["sys", "api", "file", "v1"];
+    private excludePath: Array<string> = ["/sys/*", "/api/*", "/static/*", "/v1/*"];
+
     constructor() {
         super();
         this.type = "content";
+        this.router.all(this.excludePath, (req, res) => routerUtil.resNotFound(res));
+        this.router.get("/favicon.ico", (req, res) => {
+            res.send("no icon");
+            // TODO: response icon from config.
+        });
         this.router.get("/*", (req, res) => {
-            let path: Path = new Path(req.path, req.query);
-            if (ContentRouter.EXCLUDE_PATH.includes(path.first)) {
-                res.send("not allow");
-                // TODO: 404
-            } else {
-                res.send("other content");
-                // TODO: look for page.
-            }
+            let contentFile: ContentFile = new ContentFile(req.path, req.query);
+            contentFile.response(res);
         });
     }
 }

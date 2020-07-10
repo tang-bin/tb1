@@ -1,14 +1,57 @@
-class TimeFormatter {
-    static SHORT_FORMAT: string = "MM/DD/yyyy hh:mm:ss";
-    static DEFAULT_FORMAT: string = "Mon DD yyyy, hh:mm:ss AM/PM";
+class FormatUtil {
+
+    static SHORT_TIME_FORMAT: string = "MM/DD/yyyy hh:mm:ss";
+    static DEFAULT_TIME_FORMAT: string = "Mon DD yyyy, hh:mm:ss AM/PM";
     static MONTH_LONG: Array<string> = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     static MONTH_SHORT: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    duration(time: number, unit: string): string {
+        if (time === null || time === undefined) return "";
+        else if (time === 0) return "0";
+        else if (time < 0) return "";
+        //
+        unit = unit || "ms";
+        //
+        let m = 60, h = 3600, d = 86400, strs = [];
+        switch (unit) {
+            case "m":
+                return time + "m";
+            case "h":
+                return time + "h";
+            case "d":
+                return time + "d";
+            case "ms":
+                if (time < 1000) return time + "ms";
+                else time = time / 1000;
+                break;
+        }
+        if (time >= d) {
+            strs.push(Math.floor(time / d) + "d");
+            time = time % d;
+        }
+        if (time >= h) {
+            strs.push(Math.floor(time / h) + "h");
+            time = time % h;
+        }
+        if (time >= m) {
+            strs.push(Math.floor(time / m) + "m");
+            time = time % m;
+        }
+        if (time > 0) {
+            strs.push(Math.floor(time) + "s");
+        }
+        //
+        if (strs.length >= 2) return strs[0] + " " + strs[1];
+        else if (strs.length === 1) return strs[0];
+        else return "";
+    }
+
     /**
      * 
      * @param time 
      * @param formatString 
      */
-    format(time: number = 0, formatString: string = "short") {
+    time(time: number = 0, formatString: string = "short") {
         let date;
         if (time === 0) date = new Date();
         else if (isNaN(Number(time))) {
@@ -21,8 +64,8 @@ class TimeFormatter {
             else date = new Date(time);
         }
         //
-        if (formatString === "short") formatString = TimeFormatter.SHORT_FORMAT;
-        else if (!formatString) formatString = TimeFormatter.DEFAULT_FORMAT;
+        if (formatString === "short") formatString = FormatUtil.SHORT_TIME_FORMAT;
+        else if (!formatString) formatString = FormatUtil.DEFAULT_TIME_FORMAT;
         //
         let str: string = formatString;
         //
@@ -31,10 +74,10 @@ class TimeFormatter {
         }
         if (str.indexOf("Month") >= 0) {
 
-            str = str.replace("Month", TimeFormatter.MONTH_LONG[date.getMonth()]);
+            str = str.replace("Month", FormatUtil.MONTH_LONG[date.getMonth()]);
         }
         if (str.indexOf("Mon") >= 0) {
-            str = str.replace("Mon", TimeFormatter.MONTH_SHORT[date.getMonth()]);
+            str = str.replace("Mon", FormatUtil.MONTH_SHORT[date.getMonth()]);
         }
         if (str.indexOf("MM") >= 0) {
             const mm: number = date.getMonth() + 1;
@@ -76,5 +119,4 @@ class TimeFormatter {
         return str;
     };
 }
-
-export const timeFormatter = new TimeFormatter();
+export const formatUtil: FormatUtil = new FormatUtil();
