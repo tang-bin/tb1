@@ -1,0 +1,8 @@
+# global:
+#   port: 80 
+#   contentRoot: content
+#   staticRoot: static
+
+# theme:
+#   root: theme
+#   default: default
