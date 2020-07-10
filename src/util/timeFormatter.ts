@@ -8,7 +8,7 @@ class TimeFormatter {
      * @param time 
      * @param formatString 
      */
-    format(time: number, formatString: string) {
+    format(time: number = 0, formatString: string = "short") {
         let date;
         if (time === 0) date = new Date();
         else if (isNaN(Number(time))) {
