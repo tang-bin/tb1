@@ -1,5 +1,5 @@
 class DurationFormatter {
-    format(time: number, unit: string) {
+    format(time: number, unit: string): string {
         if (time === null || time === undefined) return "";
         else if (time === 0) return "0";
         else if (time < 0) return "";

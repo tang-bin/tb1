@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc",
+    "tsc": "npx tsc",
     "dev": "npx ts-node-dev src/app.ts",
-    "prod": "tsc && node ./build/app.js"
+    "prod": "npx tsc && node ./build/app.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,5 @@
     "ts-node-dev": "^1.0.0-pre.51",
     "typescript": "^3.9.6"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

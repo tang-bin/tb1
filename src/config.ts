@@ -1,16 +1,11 @@
 class Config {
-    contentRoot: String;
-    themeRoot: String;
-    themeName: String;
-    port: Number;
+    public contentRoot: String = "/content";
+    public themeRoot: String = "/theme";
+    public themeName: String = "default";
+    public port: Number = 3000;
     constructor() {
-        this.contentRoot = "./content";
-        this.themeRoot = "./theme";
-        this.themeName = "default"
-        this.port = 3000;
     }
-    load() {
-
+    load(): void {
     }
 }
 

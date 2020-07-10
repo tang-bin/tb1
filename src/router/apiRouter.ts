@@ -9,4 +9,4 @@ class APIRouter extends Router {
     }
 }
 
-export const apiRouter = new APIRouter();
+export const apiRouter: APIRouter = new APIRouter();
