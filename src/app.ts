@@ -15,10 +15,12 @@ config.load();
 const app: express.Application = express();
 
 // router
-app.all("*", (req, res, next) => {
-  if (req.protocol === "https") next();
-  else res.redirect("https://" + req.hostname + ":" + config.httpsPort + req.originalUrl);
-});
+if (config.enableHttps) {
+  app.all("*", (req, res, next) => {
+    if (req.protocol === "https") next();
+    else res.redirect("https://" + req.hostname + ":" + config.httpsPort + req.originalUrl);
+  });
+}
 app.use("/v1/", express.static(config.contentRoot + "/v1"));
 app.use("/static/", express.static(config.staticRoot));
 app.use("/sys/", sysRouter.router);
@@ -31,9 +33,11 @@ http.createServer(app).listen(config.httpPort, () => {
 });
 
 // https server
-const key = fs.readFileSync(config.keyPath, 'utf8')
-  , cert = fs.readFileSync(config.crtPath, 'utf8')
-  , credentials = { key, cert };
-https.createServer(credentials, app).listen(config.httpsPort, () => {
-  sysLog.log("Start HTTPS server at", config.httpsPort);
-});
+if (config.enableHttps) {
+  const key = fs.readFileSync(config.keyPath, 'utf8')
+    , cert = fs.readFileSync(config.crtPath, 'utf8')
+    , credentials = { key, cert };
+  https.createServer(credentials, app).listen(config.httpsPort, () => {
+    sysLog.log("Start HTTPS server at", config.httpsPort);
+  });
+}

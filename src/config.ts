@@ -11,6 +11,7 @@ class Config {
     public staticRoot: string = ""
     public themeRoot: string = "";
     public themeName: string = "";
+    public enableHttps: boolean = false;
     public httpPort: Number = 80;
     public httpsPort: Number = 443;
     public keyPath: string = "";
@@ -18,8 +19,6 @@ class Config {
 
     constructor() {
         this.appRoot = path.resolve(__dirname, "..");
-        this.keyPath = path.resolve(this.appRoot, "sslcert/server.key");
-        this.crtPath = path.resolve(this.appRoot, "sslcert/server.cert");
     }
     public load(): void {
         let configFilePath: string = path.resolve(this.appRoot, "config.yaml")
@@ -29,8 +28,11 @@ class Config {
         this.contentRoot = this.trimPath(l("global.contentRoot"), "content");
         this.staticRoot = this.trimPath(l("global.staticRoot"), "static");
         this.themeRoot = this.trimPath(l("theme.root"), "theme");
-        this.httpPort = l("global.port") || 80;
-        this.httpsPort = l("global.sslPort") || 443;
+        this.httpPort = l("global.port") || 3000;
+        this.httpsPort = l("https.port") || 8080;
+        this.keyPath = this.trimPath(l("https.keyPath"), "sslcert/server.key");
+        this.crtPath = this.trimPath(l("https.certPath"), "sslcert/server.cert");
+        this.enableHttps = l("https.enable") || false;
     }
 
     private trimPath(p: string, defaultPath: string): string {

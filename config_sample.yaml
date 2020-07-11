@@ -1,0 +1,14 @@
+global:
+  port: 80 
+  contentRoot: content
+  staticRoot: static
+
+https:
+  enabled: false
+  port: 443
+  keyPath: sslcert/server.key
+  certPath: sslcert/server.cert
+
+theme:
+  root: theme
+  default: default
