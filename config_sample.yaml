@@ -4,7 +4,7 @@ global:
   staticRoot: static
 
 https:
-  enabled: false
+  enable: false
   port: 443
   keyPath: sslcert/server.key
   certPath: sslcert/server.cert
