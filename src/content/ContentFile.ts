@@ -38,9 +38,8 @@ export class ContentFile {
             , fileName: string = path.basename(this.url)
             , ext: string = path.extname(this.url);
         const p1: string = path.resolve(config.contentRoot, dir, fileName);
-        if (ext) {
-            if (fileUtil.exists(p1)) return p1;
-        } else {
+        if (fileUtil.exists(p1)) return p1;
+        else if (!ext) {
             const p2: string = p1 + ".html", p3: string = p1 + "/index.html";
             if (fileUtil.exists(p2)) return p2;
             else if (fileUtil.exists(p3)) return p3;
