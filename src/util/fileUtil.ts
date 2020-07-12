@@ -2,8 +2,8 @@ import fs = require("fs");
 class FileUtil {
     public exists(path: string): boolean {
         try {
-            fs.accessSync(path, fs.constants.R_OK);
-            return true;
+            const isFile:boolean = fs.lstatSync(path).isFile();
+            return isFile;
         } catch (err) {
             return false;
         }
