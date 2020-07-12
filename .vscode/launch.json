@@ -8,15 +8,15 @@
         "request": "attach",
         "name": "Attach by Process ID",
         "processId": "${command:PickProcess}",
-        "outFiles": ["${workspaceRoot}/build/**/*.js"],
+        "outFiles": ["${workspaceRoot}/lib/**/*.js"],
         "sourceMaps": true,
     }, {
         "type": "node",
         "request": "launch",
         "name": "Launch Program",
         "program": "${workspaceFolder}/src/app.ts",
-        "preLaunchTask": "tsc: build - tsconfig.json",
-        "outFiles": ["${workspaceFolder}/build/**/*.js"], 
+        "preLaunchTask": "tsc: lib - tsconfig.json",
+        "outFiles": ["${workspaceFolder}/lib/**/*.js"], 
         "sourceMaps": true,
     }]
 }

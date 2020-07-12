@@ -1,0 +1,8 @@
+server:
+  port: 3000
+  content: content
+  https: false
+  httpsPort: 8080
+  sslKey: sslcert/server.key
+  sslCert: sslcert/server.cert
+  showFolder: false # not implemented yet.

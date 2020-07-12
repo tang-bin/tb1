@@ -1,18 +1,19 @@
 {
-  "name": "tb1",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "@btang/tb1",
+  "version": "0.0.1",
+  "description": "Just another express wrapper.",
+  "main": "./lib/app.js",
+  "bin": "./lib/app.js",
   "scripts": {
-    "tsc": "npx tsc",
+    "build": "npx tsc",
     "dev": "npx ts-node-dev src/app.ts",
-    "prod": "npx tsc && node ./build/app.js"
+    "prod": "npx tsc && node ./lib/app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tang-bin/tb1.git"
   },
-  "author": "",
+  "author": "Tang Bin",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/tang-bin/tb1/issues"

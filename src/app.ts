@@ -21,8 +21,6 @@ if (config.enableHttps) {
     else res.redirect("https://" + req.hostname + ":" + config.httpsPort + req.originalUrl);
   });
 }
-app.use("/v1/", express.static(config.contentRoot + "/v1"));
-app.use("/static/", express.static(config.staticRoot));
 app.use("/sys/", sysRouter.router);
 app.use("/api/", apiRouter.router);
 app.use("/", contentRouter.router);

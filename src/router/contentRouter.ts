@@ -4,7 +4,7 @@ import { routerUtil } from '../util/routerUtil';
 
 class ContentRouter extends Router {
 
-    private excludePath: Array<string> = ["/sys/*", "/api/*", "/static/*", "/v1/*"];
+    private excludePath: Array<string> = ["/sys/*", "/api/*"];
 
     constructor() {
         super();
