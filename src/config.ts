@@ -19,6 +19,8 @@ class Config {
     public crtPath: string = "";
     public cwd: string = "";
 
+    public wrappers: Array<any> = [];
+
     constructor() {
         this.appRoot = path.resolve(__dirname, "..");
         this.cwd = process.cwd();
@@ -34,10 +36,9 @@ class Config {
      * 4. [appRoot]/config.yaml
      */
     public load(): void {
-        let configFilePath: string = path.resolve(this.appRoot, "config.yaml")
-            , c: any = yaml.safeLoad(this.getConfigFile())
-            , d = (p: string) => util.readFromObject(c, p);
+        const c: any = yaml.safeLoad(this.getConfigFile()), d = (p: string) => util.readFromObject(c, p);
 
+        // server
         this.contentRoot = this.trimPath(d("server.content"), "content");
         this.keyPath = this.trimPath(d("server.sslKey"), "");
         this.crtPath = this.trimPath(d("server.sslCert"), "");
@@ -45,6 +46,20 @@ class Config {
         this.httpPort = this.trimNum(d("server.port"), 3000);
         this.httpsPort = this.trimNum(d("server.httpsPort"), 8080);
         this.enableHttps = d("server.https") || false;
+
+        // wrapper 
+        this.wrappers = (d("wrapper") || []).map((wrapper: any) => {
+            if (wrapper && wrapper.src && wrapper.dest) {
+                if (wrapper.type === "file") {
+                    wrapper.ext = path.extname(wrapper.src);
+                    wrapper.file = path.basename(wrapper.src, wrapper.ext);
+                    if (wrapper.file === "*") wrapper.file = "";
+                    return wrapper;
+                } else if (wrapper.type === "path") return wrapper;
+                else return null;
+            } else return null;
+        }).filter((wrapper: any) => wrapper);
+        console.debug(this.wrappers);
     }
 
     private getConfigFile(): string {

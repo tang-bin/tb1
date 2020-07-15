@@ -1,19 +1,22 @@
-import fs = require("fs");
 import path = require("path");
 import { config } from "../config";
 import { fileUtil } from "../util/fileUtil";
 import { routerUtil } from "../util/routerUtil";
 import { data } from "../data";
+import { util } from "../util/util";
+import cp = require("child_process");
 
 export class ContentFile {
     private url: string;
     private param: object;
     private _filePath: string = "";
+    private _wrapper: string = "";
 
     constructor(url: string = "", param: object = {}) {
         this.url = url.split("/").filter(s => s).join("/");
         this.param = param;
         this._filePath = this.getFilePath();
+        this.findWrapper();
     }
 
     public get exists(): boolean {
@@ -26,6 +29,22 @@ export class ContentFile {
 
     public response(res: any): void {
         if (this.exists) {
+            console.debug("xxxxxxxxxxxxx", this._wrapper);
+            if (this._wrapper) {
+                const cmd:string = this._wrapper.replace("$path", this._filePath).replace("$root", config.contentRoot);
+                console.debug(cmd);
+                cp.exec(cmd, (error, stdout, stderr) => {
+                    if (error) {
+                        console.log(`error: ${error.message}`);
+                        return;
+                    }
+                    if (stderr) {
+                        console.log(`stderr: ${stderr}`);
+                        return;
+                    }
+                    console.log(`stdout: ${stdout}`);
+                });
+            }
             if (data.isPage(this._filePath)) {
                 res.send("find the page, need special handling");
             } else res.sendFile(this._filePath);
@@ -48,5 +67,18 @@ export class ContentFile {
             if (fileUtil.isFile(p3)) return p3;
         }
         return "";
+    }
+
+    private findWrapper(): void {
+        if (this._filePath && config.wrappers && config.wrappers.length) {
+            config.wrappers.some(wrapper => {
+                if (wrapper.type === 'file') {
+                    this._wrapper = util.endsWith(this._filePath, wrapper.file + wrapper.ext) ? wrapper.dest : "";
+                } else if (wrapper.type === "path") {
+                    // TODO: Math path
+                }
+                return Boolean(this._wrapper);
+            });
+        }
     }
 }

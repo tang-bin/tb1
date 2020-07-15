@@ -6,3 +6,8 @@ server:
   sslKey: sslcert/server.key
   sslCert: sslcert/server.cert
   showFolder: false # not implemented yet.
+
+wrapper:
+  - type: "file"
+    src: "*.html"
+    dest: "/Users/btang/Workspace/a $path $root"
